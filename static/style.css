@@ -1,0 +1,23 @@
+body {
+    background-color: #f8f9fa;
+    text-align: center;
+    padding: 20px;
+}
+
+video, canvas {
+    border: 2px solid #343a40;
+    border-radius: 10px;
+    width: 100%;
+    max-width: 500px;
+}
+
+#capture-btn {
+    margin-top: 15px;
+}
+
+#processed-image {
+    margin-top: 20px;
+    display: none;
+    border: 2px solid #28a745;
+    border-radius: 10px;
+}
