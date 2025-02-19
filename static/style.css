@@ -1,23 +1,41 @@
 body {
     background-color: #f8f9fa;
-    text-align: center;
-    padding: 20px;
+    font-family: 'Arial', sans-serif;
 }
 
-video, canvas {
+h1, h2 {
+    font-weight: bold;
+}
+
+.video-container {
     border: 2px solid #343a40;
-    border-radius: 10px;
-    width: 100%;
-    max-width: 500px;
+    border-radius: 15px;
+    overflow: hidden;
+    background-color: #000;
 }
 
-#capture-btn {
-    margin-top: 15px;
+#capture-btn, #info-btn {
+    width: 100%;
+    max-width: 300px;
+    margin: 10px auto;
+    font-size: 1.2rem;
+}
+
+.image-container {
+    border: 2px solid #28a745;
+    border-radius: 15px;
+    padding: 10px;
+    background-color: #fff;
+    display: inline-block;
 }
 
 #processed-image {
-    margin-top: 20px;
     display: none;
-    border: 2px solid #28a745;
+    max-width: 100%;
+    height: auto;
     border-radius: 10px;
+}
+
+.shadow-lg {
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
 }

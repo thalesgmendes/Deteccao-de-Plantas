@@ -1,6 +1,9 @@
 const video = document.querySelector("video");
 const captureBtn = document.getElementById("capture-btn");
 const processedImage = document.getElementById("processed-image");
+const infoBtn = document.getElementById("info-btn");
+
+let detectedPlantName = "";
 
 navigator.mediaDevices.getUserMedia({ video: true })
     .then(stream => {
@@ -22,7 +25,6 @@ captureBtn.addEventListener("click", async () => {
     const imageData = canvas.toDataURL("image/jpeg");
 
     try {
-
         const response = await fetch("http://localhost:5000/process", {
             method: "POST",
             headers: {
@@ -37,10 +39,19 @@ captureBtn.addEventListener("click", async () => {
 
         const data = await response.json();
         const processedImageData = data.processed_image;
+        detectedPlantName = data.plant_name;
 
         processedImage.src = processedImageData;
         processedImage.style.display = "block";
     } catch (error) {
         console.error("Erro:", error);
+    }
+});
+
+infoBtn.addEventListener("click", () => {
+    if (detectedPlantName) {
+        window.location.href = `/info/${detectedPlantName}`;
+    } else {
+        alert("Nenhuma planta detectada. Tire uma foto primeiro.");
     }
 });
