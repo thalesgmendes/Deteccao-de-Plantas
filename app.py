@@ -4,25 +4,17 @@ from ultralytics import YOLO
 import base64
 import cv2
 import numpy as np
+import firebase_admin
+from firebase_admin import credentials, firestore
 
 app = Flask(__name__)
 CORS(app)
 
-model = YOLO("best.pt")
+cred = credentials.Certificate('./deteccao-de-plantas-firebase-adminsdk-fbsvc-2a094927fa.json')
+firebase_admin.initialize_app(cred)
+db = firestore.client()
 
-plant_info = {
-    "buganvilia": {
-        "name": "Buganvília",
-        "description": "A buganvília é uma planta ornamental conhecida por suas cores vibrantes.",
-        "care_tips": "Necessita de sol pleno e regas regulares."
-    },
-    "tulip": {
-        "name": "Tulipa",
-        "description": "Tulipas são flores coloridas que simbolizam elegância.",
-        "care_tips": "Plante em solo bem drenado e regue moderadamente."
-    },
-    # Adicione mais plantas aqui
-}
+model = YOLO("best.pt")
 
 @app.route("/")
 def inicio():
@@ -41,24 +33,29 @@ def process_image():
     results = model(image)
     annotated_frame = results[0].plot()
 
-    # Captura o nome da planta detectada
-    detected_plant = results[0].names[results[0].boxes.cls[0].item()]  # Pega a primeira detecção
+    if len(results) > 0 and len(results[0].boxes.cls) > 0:
+        detected_plant = results[0].names[results[0].boxes.cls[0].item()]
+    else:
+        detected_plant = "Nenhuma planta detectada"
 
     _, buffer = cv2.imencode(".jpg", annotated_frame)
     processed_image_data = base64.b64encode(buffer).decode("utf-8")
 
     return jsonify({
         "processed_image": f"data:image/jpeg;base64,{processed_image_data}",
-        "plant_name": detected_plant  # Retorna o nome da planta
+        "plant_name": detected_plant
     })
 
 @app.route("/info/<plant_name>")
 def show_plant_info(plant_name):
-    info = plant_info.get(plant_name.lower(), {
-        "name": "Desconhecida",
-        "description": "Informações não disponíveis para esta planta.",
-        "care_tips": "Consulte um especialista para mais detalhes."
-    })
+    print(plant_name)
+    doc_ref = db.collection("plantas").document(plant_name)
+    doc = doc_ref.get()
+    if doc.exists:
+        info = doc.to_dict()
+    else:
+        info = None
+
     return render_template("info.html", plant=info)
 
 if __name__ == "__main__":
