@@ -4,15 +4,23 @@ from ultralytics import YOLO
 import base64
 import cv2
 import numpy as np
-import firebase_admin
-from firebase_admin import credentials, firestore
+import pyrebase
 
 app = Flask(__name__)
 CORS(app)
 
-cred = credentials.Certificate('./deteccao-de-plantas-firebase-adminsdk-fbsvc-164c9c4490.json')
-firebase_admin.initialize_app(cred)
-db = firestore.client()
+firebaseConfig = {
+  'apiKey': "AIzaSyBTptL4v2ONEmn5CCNGSY3FeefTofz3wp4",
+  'authDomain': "deteccao-de-plantas.firebaseapp.com",
+  'projectId': "deteccao-de-plantas",
+  'storageBucket': "deteccao-de-plantas.firebasestorage.app",
+  'databaseURL': "https://deteccao-de-plantas-default-rtdb.firebaseio.com",
+  'messagingSenderId': "144203838962",
+  'appId': "1:144203838962:web:a62e7f8f2c6adc77f3276b"
+}
+firebase = pyrebase.initialize_app(firebaseConfig)
+db = firebase.database()
+
 
 model = YOLO("best.pt")
 
@@ -52,15 +60,18 @@ def process_image():
 
 @app.route("/info/<plant_name>")
 def show_plant_info(plant_name):
-    print(plant_name)
-    doc_ref = db.collection("plantas").document(plant_name)
-    doc = doc_ref.get()
-    if doc.exists:
-        info = doc.to_dict()
-    else:
-        info = None
+    try:
+        doc_ref = db.child("plantas").child(plant_name)
+        doc = doc_ref.get()
 
-    return render_template("info.html", plant=info)
+        if doc.val() is None:
+            return "Planta não encontrada.", 404
+        info = doc.val()
+        print(doc.val())
+        return render_template('info.html', plant=info)
+
+    except Exception as e:
+        return f"Erro ao acessar o banco de dados: {e}", 500
 
 if __name__ == "__main__":
     app.run(debug=True)
