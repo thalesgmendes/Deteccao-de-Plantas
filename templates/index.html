@@ -6,35 +6,49 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Detecção de Plantas</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="stylesheet" href="../static/style.css">
 </head>
 <body>
+<!-- Camera Section -->
+<section id="camera-section" class="camera-section">
     <div class="container my-5">
-        <h1 class="text-primary text-center mb-4">Captura de Foto</h1>
-        <div class="row justify-content-center">
-            <div class="col-md-6 text-center">
+    <h1 class="text-primary text-center mb-4">Captura de Foto</h1>
+    <div class="row justify-content-center">
+            <div class="col-md-8 col-lg-6">
                 <!-- Vídeo da câmera -->
-                <div class="video-container shadow-lg mb-4">
+                <div class="video-container mb-4">
                     <video autoplay muted class="w-100"></video>
                 </div>
                 <!-- Botão para capturar a foto -->
-                <button id="capture-btn" class="btn btn-success btn-lg">Tirar Foto</button>
+                <div class="text-center">
+                    <button id="capture-btn" class="btn">
+                        <i class="fas fa-camera me-2"></i>
+                        Tirar Foto
+                    </button>
+                </div>
             </div>
         </div>
 
         <!-- Foto processada -->
         <div class="row justify-content-center mt-5">
-            <div class="col-md-6 text-center">
-                <h2 class="text-secondary mb-3">Foto Processada:</h2>
-                <div class="image-container shadow-lg p-3 bg-white rounded">
-                    <img id="processed-image" class="img-fluid rounded" src="" alt="Imagem processada">
-                </div>
-                <div>
-                <button id="info-btn" class="btn btn-primary btn-lg mt-3">Verificar Informações</button>
+        <div class="col-md-6 text-center">
+            <h2 class="text-secondary mb-3">Foto Processada:</h2>
+            <div class="image-container shadow-lg p-3 bg-white rounded">
+                <img id="processed-image" class="img-fluid rounded" src="" alt="Imagem processada">
+            </div>
+                <div class="text-center">
+                    <button id="info-btn" class="btn mt-4">
+                        <i class="fas fa-info-circle me-2"></i>
+                        Verificar Informações
+                    </button>
                 </div>
             </div>
         </div>
     </div>
-    <script src="../static/script2.js"></script>
+</section>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<script src="../static/script2.js"></script>
 </body>
 </html>

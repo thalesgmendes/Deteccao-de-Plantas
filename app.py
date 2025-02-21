@@ -10,7 +10,7 @@ from firebase_admin import credentials, firestore
 app = Flask(__name__)
 CORS(app)
 
-cred = credentials.Certificate('./deteccao-de-plantas-firebase-adminsdk-fbsvc-2a094927fa.json')
+cred = credentials.Certificate('./deteccao-de-plantas-firebase-adminsdk-fbsvc-164c9c4490.json')
 firebase_admin.initialize_app(cred)
 db = firestore.client()
 
@@ -18,6 +18,10 @@ model = YOLO("best.pt")
 
 @app.route("/")
 def inicio():
+    return render_template("front.html")
+
+@app.route("/camera")
+def camera():
     return render_template("index.html")
 
 @app.route("/process", methods=["POST"])

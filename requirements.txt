@@ -1,0 +1,6 @@
+flask==2.0.1
+flask-cors==3.0.10
+ultralytics==8.0.0
+opencv-python==4.8.0.74
+numpy==1.24.3
+firebase-admin==6.2.0
