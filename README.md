@@ -1,0 +1,1 @@
+Aplicação web interativa para detectar e identificar plantas nativas do Maranhão a partir de fotos. A plataforma utiliza inteligência artificial para reconhecer espécies e fornecer informações detalhadas sobre cada planta.
